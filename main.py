@@ -95,20 +95,5 @@ class api1881:
 A = api1881(key_a=config["API"]["KEY_A"], key_b=config["API"]["KEY_B"],
         url=config["API"]["URL"])
 
-print(A)
-#A.phonenumber_lookup(phone="90026056")
-A.orgnumber_lookup(orgnr="918124934")
-exit()
-
-try:
-    conn.request("GET", "/geocoding/address?%s" % params, "{body}", headers)
-    response = conn.getresponse()
-    data = response.read()
-    print(data)
-    conn.close()
-except Exception as e:
-    print("[Errno {0}] {1}".format(e.errno, e.strerror))
-
-####################################
 
 
