@@ -1,38 +1,58 @@
-#!/usr/bin/env python3
-#! coding: utf-8
 
-#import http.client, urllib.request, urllib.parse, urllib.error, base64
-from requests import get
-import urllib.parse
-import base64
-import bs4 as bs
-import json
-import configparser
+package main
 
-#soup = bs.BeautifulSoup(source, "html")
-
-config = configparser.ConfigParser()
-config.read("config.ini")
+import (
+	"fmt"
+	"net/http"
+	"github.com/gorilla/mux"
+)
 
 
+type api1881 struct {
+	APIURL			string    //https://services.api1881.no/
+	APIKeyA     string
+	APIKeyB     string
+	HTTP_HEADER string    //HTTP_HEAD = { 'Ocp-Apim-Subscription-Key': None,}
+}
+
+
+type maltegoPhoneNumber struct {
+	DisplayName	      string //Phone Number
+  EntityName	      string //Const value "maltego.PhoneNumber"
+  ShortDescription	string //Const value "A telephone number"
+  EntityCategory    string //Const value "Personal"
+  BaseEntity        string //Const value "maltego.Unknown"
+
+  Phonenumber       string	Phone Number
+  phonenumber.countrycode+	string	Country Code
+  phonenumber.citycode+	string	City Code
+  phonenumber.areacode+	string	Area Code
+  phonenumber.lastnumbers+	string	Last Digits
+}
+
+
+func performAPIRequest () {
+}
+
+func addressToCoordinates () {
+}
+
+func coordinatesToAddress () {
+}
+
+func lookupPhoneNumber () {
+}
+
+func lookupOrganization () {
+}
+
+func main () {
+	
+}
 
 
 
-class api1881:
-	API_KEYA = None
-	API_KEYB = None
-	API_URL  = None
-
-	HTTP_HEAD = { 'Ocp-Apim-Subscription-Key': None,}
-
-	def __init__(self, key_a=None, key_b=None, url="https://services.api1881.no/" ):
-		if None not in [key_a, key_b]:
-			self.API_KEYA = key_a
-			self.API_KEYB = key_b
-		self.API_URL = url
-
-		self.HTTP_HEAD['Ocp-Apim-Subscription-Key'] = self.API_KEYA
-
+/*
 	def run_query(self, url_context=None, params=None, data=None):
 		if params:
 			params = urllib.parse.urlencode( params, safe="" )
@@ -94,6 +114,4 @@ class api1881:
 
 A = api1881(key_a=config["API"]["KEY_A"], key_b=config["API"]["KEY_B"],
         url=config["API"]["URL"])
-
-
-
+*/
