@@ -5,51 +5,129 @@ import (
 	"fmt"
 	"net/http"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 )
 
 
 type api1881 struct {
-	APIURL			string    //https://services.api1881.no/
-	APIKeyA     string
-	APIKeyB     string
-	HTTP_HEADER string    //HTTP_HEAD = { 'Ocp-Apim-Subscription-Key': None,}
+	url			string    //https://services.api1881.no/
+	key     string
+	header  string  //HTTP_HEAD = { 'Ocp-Apim-Subscription-Key': None,}
 }
 
-
-type maltegoPhoneNumber struct {
-	DisplayName	      string //Phone Number
-  EntityName	      string //Const value "maltego.PhoneNumber"
-  ShortDescription	string //Const value "A telephone number"
-  EntityCategory    string //Const value "Personal"
-  BaseEntity        string //Const value "maltego.Unknown"
-
-  Phonenumber       string	Phone Number
-  phonenumber.countrycode+	string	Country Code
-  phonenumber.citycode+	string	City Code
-  phonenumber.areacode+	string	Area Code
-  phonenumber.lastnumbers+	string	Last Digits
-}
 
 
 func performAPIRequest () {
 }
 
+/*
+	def address_to_coordinates(self,address=None):
+		if not address:
+			return None
+		params = { "address" : address }
+
+		res = self.run_query(url_context="/geocoding/address", params=params)
+		return res
+*/
 func addressToCoordinates () {
 }
 
-func coordinatesToAddress () {
+/*
+	def coordinates_to_address(self, lat=None, lon=None):
+		if not X or not Y:
+			return None
+		params = { "latitude" : lat, "longtitude": lon }
+		res = self.run_query(url_context="/geocoding/address", params=params)
+		return res
+*/
+func coordinatesToAddress (lat uint32, lon uint32) {
 }
 
-func lookupPhoneNumber () {
+
+/*
+	def phonenumber_lookup(self, phone=None):
+		if not phone:
+			return None
+		res = self.run_query(url_context="/lookup/phonenumber/{}".format(phone))
+		return res
+*/
+func lookupPhoneNumber (phoneNumber string) {
 }
 
-func lookupOrganization () {
+
+/*
+	def orgnumber_lookup(self, orgnr=None):
+		if not orgnr or not orgnr.isdigit():
+			return None
+		
+		res = self.run_query(url_context="/lookup/organizationnumber/{}".format(orgnr))
+		return res
+*/
+func lookupOrganization (organizationNumber string) {
+
 }
 
+/*
+Execute API Query
+*/
+func getHTTPMessageBody( resp *http.Response ) string {
+	defer resp.Body.Close()
+	b, err := ioutil.ReadAll(resp.Body)
+	if err!= nil{
+		t.Fatal(err)
+	}
+	return string(b)
+}
+
+/*
+Execute API Query
+*/
+func executeAPIQuery (api *api1881) string {
+	req,err := http.NewRequest("GET", api.url, nil)
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error creating GET request: %v", err))
+		return
+	}
+	req.Header.Set(api.header, api.key)
+	req.Header.Set("Content-Type", "text/json; charset=utf-8")
+
+	client := http.Client{}
+	res,err := client.Do(req)
+	if err != nil {
+		fmt.Println(fmt.Errorf("Error creating GET request: %v", err))
+		return
+	}
+	fmt.Println( res.StatusCode )
+	fmt.Println( resp.Body )
+	return res
+}
+
+
+/*
+Defines REST API handlers
+*/
+func newRouter() *mux.Router {
+	r := mux.NewRouter()
+
+	r.HandleFunc("/maltego/addressToCoordinates", addressToCoordinates).Methods("GET")
+	r.HandleFunc("/maltego/coordinatesToAddress", coordinatesToAddress).Methods("GET")
+}
+
+/*
+
+*/
 func main () {
-	
-}
+	r := newRouter()
+	err := http.ListenAndServer(":8080",r)
+	if err != nil {
+		panic(err.Error())
+	}
 
+	api := api1881{}
+	api.key    = "6b21fb1aafd247d185ae6af255eb4049"
+	api.url    = "https://services.api1881.no/"
+	api.header = "Ocp-Apim-Subscription-Key"
+}
 
 
 /*
@@ -70,48 +148,4 @@ func main () {
 			return json.loads(resp.content)
 		print("{} - {}".format(resp.status_code, resp.text))
 		return None
-
-
-	def address_to_coordinates(self,address=None):
-		if not address:
-			return None
-		params = { "address" : address }
-
-		res = self.run_query(url_context="/geocoding/address", params=params)
-		return res
-		
-
-	def coordinates_to_address(self, lat=None, lon=None):
-		if not X or not Y:
-			return None
-		params = { "latitude" : lat, "longtitude": lon }
-		res = self.run_query(url_context="/geocoding/address", params=params)
-		return res
-
-	def orgnumber_lookup(self, orgnr=None):
-		if not orgnr or not orgnr.isdigit():
-			return None
-		
-		res = self.run_query(url_context="/lookup/organizationnumber/{}".format(orgnr))
-		return res
-
-	def phonenumber_lookup(self, phone=None):
-		if not phone:
-			return None
-		
-		res = self.run_query(url_context="/lookup/phonenumber/{}".format(phone))
-		return res
-
-
-	def __str__(self,):
-		out = "{:<30}{}\n".format("API URL", self.API_URL)
-		out += "{:<30}{}\n".format("API KEY", self.API_KEYA)
-		out += "{:<30}{}\n".format("API KEY", self.API_KEYB)
-		for k in self.HTTP_HEAD:
-			out += "{:<30}{}\n".format( k, self.HTTP_HEAD[k] ) 
-		return out
-
-
-A = api1881(key_a=config["API"]["KEY_A"], key_b=config["API"]["KEY_B"],
-        url=config["API"]["URL"])
 */
