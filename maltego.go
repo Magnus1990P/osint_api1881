@@ -12,10 +12,10 @@ type maltegoPhoneNumber struct {
   EntityCategory    string //Const value "Personal"
   BaseEntity        string //Const value "maltego.Unknown"
 
-  Phonenumber       string	Phone Number
+  Phonenumber               string	Phone Number
   phonenumber.countrycode+	string	Country Code
-  phonenumber.citycode+	string	City Code
-  phonenumber.areacode+	string	Area Code
+  phonenumber.citycode+	    string	City Code
+  phonenumber.areacode+	    string	Area Code
   phonenumber.lastnumbers+	string	Last Digits
 }
 
